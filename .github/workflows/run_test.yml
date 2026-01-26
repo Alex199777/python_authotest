@@ -29,5 +29,5 @@ jobs:
         if: "github.event.inputs.deployment_target == 'test_1'"
         run: pytest tests/test_simple_button.py::test_simple_button
       - name: test_2
-        if: "github.event.inputs.deployment_target == 'test_1'"
+        if: "github.event.inputs.deployment_target == 'test_2'"
         run: pytest tests/test_simple_button.py::test_like_button
