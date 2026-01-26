@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 import pytest
-#sgsgsg
+
 @pytest.fixture()
 def driver():
     options = Options()
@@ -22,3 +22,9 @@ def test_simple_button(driver):
     button = wait.until(EC.element_to_be_clickable((By.ID, 'submit-id-submit')))
     button.click()
     assert 'Submitted' == driver.find_element(By.ID, 'result-text').text
+
+def test_like_button(driver):
+    driver.get('https://www.qa-practice.com/elements/button/like_a_button')
+    wait = WebDriverWait(driver, 10)
+    wait.until(EC.element_to_be_clickable((By.LINK_TEXT, 'Click'))).click()
+    assert driver.find_element(By.ID, 'result-text').is_displayed()
