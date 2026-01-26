@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
         deployment_target:
-        description: Choose test
+        description: "Choose test"
         required: true
         default: test_1
         type: choice
