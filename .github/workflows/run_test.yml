@@ -3,7 +3,7 @@ name: Automated tests
 on:
   workflow_dispatch:
     inputs:
-      description: 'Choose test'
+      description: Choose test
       required: true
       default: test_1
       type: choice
