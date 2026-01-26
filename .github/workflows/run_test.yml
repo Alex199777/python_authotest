@@ -5,7 +5,7 @@ on:
     inputs:
       description: 'Choose test'
       required: true
-      default:
+      default: test_1
       type: choice
       options:
         -test_1
