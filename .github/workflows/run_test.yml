@@ -6,9 +6,10 @@ on:
       deployment_target:
         description: "Choose test"
         required: true
-        default: test_1
+        default: all_test
         type: choice
         options:
+          - all_test
           - test_1
           - test_2
 
@@ -38,3 +39,7 @@ jobs:
       - name: Run test_2
         if: "github.event.inputs.deployment_target == 'test_2'"
         run: pytest tests/test_simple_button.py::test_like_button
+
+      - name: Run all_test
+        if: "github.event.inputs.deployment_target == 'all_test'"
+        run: pytest
