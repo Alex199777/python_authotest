@@ -11,6 +11,7 @@ on:
         options:
           - test_1
           - test_2
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -18,17 +19,22 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: setup Python
+
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install  Microsoft Edge
+
+      - name: Install Microsoft Edge
         run: sudo apt-get install -y microsoft-edge-stable
-      - name: install dependencies
+
+      - name: Install dependencies
         run: pip install -r requirements.txt
-      - name: test_1
-        if: ${{"github.event.inputs.deployment_target == 'test_1'"}}
+
+      - name: Run test_1
+        if: ${{ github.event.inputs.deployment_target == 'test_1' }}
         run: pytest tests/test_simple_button.py::test_simple_button
-      - name: test_2
-        if: ${{"github.event.inputs.deployment_target == 'test_2'"}}
+
+      - name: Run test_2
+        if: ${{ github.event.inputs.deployment_target == 'test_2' }}
         run: pytest tests/test_simple_button.py::test_like_button
