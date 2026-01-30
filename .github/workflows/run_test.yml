@@ -39,15 +39,15 @@ jobs:
 
       - name: Run test_1
         if: "github.event.inputs.deployment_target == 'test_1'"
-        run: pytest tests/test_simple_button.py::test_simple_button --alluredir=allureresults
+        run: pytest tests/test_simple_button.py::test_simple_button --alluredir=allure-results
 
       - name: Run test_2
         if: "github.event.inputs.deployment_target == 'test_2'"
-        run: pytest tests/test_simple_button.py::test_like_button --alluredir=allureresults
+        run: pytest tests/test_simple_button.py::test_like_button --alluredir=allure-results
 
       - name: Run all_test
         if: "github.event.inputs.deployment_target == 'all_test'"
-        run: pytest --alluredir=allureresults
+        run: pytest --alluredir=allure-results
 
 
       - name: Upload Artifact
@@ -86,7 +86,7 @@ jobs:
        uses: actions/download-artifact@v4
 
      - name: upload pages artifact
-       uses: actions/upload-pages-artifact@v2
+       uses: actions/upload-pages-artifact@v4
      - name: deploy to github
        id: deployment
        uses: actions/deploy-pages@v1.2.9
