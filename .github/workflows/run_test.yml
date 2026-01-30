@@ -13,6 +13,11 @@ on:
           - test_1
           - test_2
 
+permissions: 
+ contents: read
+ pages: write
+ id-token: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -34,12 +39,64 @@ jobs:
 
       - name: Run test_1
         if: "github.event.inputs.deployment_target == 'test_1'"
-        run: pytest tests/test_simple_button.py::test_simple_button
+        run: pytest tests/test_simple_button.py::test_simple_button --alluredir=allureresults
 
       - name: Run test_2
         if: "github.event.inputs.deployment_target == 'test_2'"
-        run: pytest tests/test_simple_button.py::test_like_button
+        run: pytest tests/test_simple_button.py::test_like_button --alluredir=allureresults
 
       - name: Run all_test
         if: "github.event.inputs.deployment_target == 'all_test'"
-        run: pytest
+        run: pytest --alluredir=allureresults
+
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+          retention-days: 1 
+
+        
+  generate_report:
+   runs-on: ubuntu-latest
+   needs: test
+   name: Generate report
+   steps:
+     - uses: actions/setup-java@v5
+       with:
+         distribution: 'microsoft' # See 'Supported distributions' for available options
+         java-version: '21'
+     - run: |
+        wget https://github.com/allure-framework/allure2/releases/download/2.29.0/allure-2.29.0.zip
+        unzip allure-2.29.0.zip -d allure
+        echo "$GITHUB_WORKSPACE/allure/allure-2.29.0/bin" >> $GITHUB_PATH
+     - name: Download all artefacts
+       uses: actions/download-artifact@v4
+     - run: allure generate -c allure-results -o _site
+
+
+  publish_report:
+   runs-on: ubuntu-latest
+   needs: generate_report
+   name: Publish report
+   steps:
+     
+     - name: Download all artefacts
+       uses: actions/download-artifact@v4
+
+     - name: upload pages artifact
+       uses: actions/upload-pages-artifact@v2
+     - name: deploy to github
+       id: deployment
+       uses: actions/deploy-pages@v1.2.9
+     
+
+
+      
+
+   
+    
+    
+    
+    
